@@ -218,7 +218,6 @@ const socialSharing: SocialSharingConfig = {
 
 export {
   display,
-  mailchimp,
   routes,
   protectedRoutes,
   baseURL,

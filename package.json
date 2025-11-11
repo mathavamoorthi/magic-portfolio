@@ -34,5 +34,6 @@
     "eslint": "^9.25.0",
     "typescript": "^5.8.3",
     "tzdata": "^1.0.44"
-  }
+  },
+  "packageManager": "pnpm@10.17.1+sha1.b312886439096718a402117aa3f375c4e3be5ed8"
 }

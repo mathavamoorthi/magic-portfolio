@@ -15,7 +15,8 @@ type Metadata = {
   summary: string;
   image?: string;
   images: string[];
-  tag?: string;
+  tag?: string; // Legacy support for single tag
+  tags?: string[]; // New tags array
   team: Team[];
   link?: string;
 };
@@ -38,13 +39,22 @@ function readMDXFile(filePath: string) {
   const rawContent = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(rawContent);
 
+  // Support both 'tag' (legacy) and 'tags' (array)
+  // Filter to ensure all tags are strings
+  const tags = data.tags 
+    ? (Array.isArray(data.tags) 
+        ? data.tags.filter((t): t is string => typeof t === "string" && t.length > 0)
+        : (typeof data.tags === "string" ? [data.tags] : []))
+    : (data.tag && typeof data.tag === "string" ? [data.tag] : []);
+
   const metadata: Metadata = {
     title: data.title || "",
     publishedAt: data.publishedAt,
     summary: data.summary || "",
     image: data.image || "",
     images: data.images || [],
-    tag: data.tag || [],
+    tag: data.tag || "",
+    tags: tags,
     team: data.team || [],
     link: data.link || "",
   };
