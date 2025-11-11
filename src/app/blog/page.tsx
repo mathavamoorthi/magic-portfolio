@@ -1,4 +1,4 @@
-import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
+import { Column, Heading, Meta, Schema, Row } from "@once-ui-system/core";
 import { Posts } from "@/components/blog/Posts";
 import { BlogFilter } from "@/components/blog/BlogFilter";
 import { baseURL, blog, person } from "@/resources";
@@ -36,7 +36,7 @@ export default async function Blog({
   const uniqueTags = Array.from(allTags).sort();
 
   return (
-    <Column maxWidth="m" paddingTop="24">
+    <Column maxWidth="l" paddingTop="24" paddingX="l" fillWidth>
       <Schema
         as="blogPosting"
         baseURL={baseURL}
@@ -50,13 +50,36 @@ export default async function Blog({
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Heading marginBottom="l" variant="heading-strong-xl" marginLeft="24">
+      <Heading marginBottom="xl" variant="heading-strong-xl">
         {blog.title}
       </Heading>
-      <BlogFilter tags={uniqueTags} />
-      <Column fillWidth flex={1} gap="40">
-        <BlogPostsList searchParams={searchParams} />
-      </Column>
+      <Row 
+        fillWidth 
+        gap="l" 
+        s={{ direction: "column" }}
+      >
+        {/* Left Sidebar - Filter (Fixed) */}
+        <Column 
+          flex={3} 
+          minWidth={20} 
+          maxWidth={24} 
+          s={{ maxWidth: "100%" }}
+          style={{
+            position: "sticky",
+            top: "80px",
+            alignSelf: "flex-start",
+            height: "fit-content",
+            maxHeight: "calc(100vh - 100px)"
+          }}
+        >
+          <BlogFilter tags={uniqueTags} />
+        </Column>
+        
+        {/* Right Side - Blog Posts (Normal Flow - Global Scroll) */}
+        <Column flex={9} fillWidth>
+          <BlogPostsList searchParams={searchParams} />
+        </Column>
+      </Row>
     </Column>
   );
 }
@@ -76,10 +99,6 @@ async function BlogPostsList({
     : [];
 
   return (
-    <>
-      <Posts range={[1, 1]} thumbnail filterByTags={filterTags} />
-      <Posts range={[2, 3]} columns="2" thumbnail direction="column" filterByTags={filterTags} />
-      <Posts range={[4]} columns="2" filterByTags={filterTags} />
-    </>
+    <Posts filterByTags={filterTags} thumbnail />
   );
 }

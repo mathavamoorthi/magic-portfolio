@@ -1,6 +1,6 @@
 "use client";
 
-import { Row, Button, Text, Column } from "@once-ui-system/core";
+import { Row, Button, Text, Column, Card } from "@once-ui-system/core";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 interface BlogFilterProps {
@@ -48,40 +48,52 @@ export function BlogFilter({ tags }: BlogFilterProps) {
   const hasActiveFilters = selectedTags.length > 0;
 
   return (
-    <Column fillWidth marginBottom="l" paddingX="l" gap="12">
-      <Text variant="label-default-m" onBackground="neutral-weak">
-        Filter by:
-      </Text>
-      <Row fillWidth gap="8" wrap vertical="center">
-        <Button
-          variant={!hasActiveFilters ? "primary" : "secondary"}
-          size="s"
-          onClick={() => handleTagClick(null)}
-          data-border="rounded"
-        >
-          All
-        </Button>
-        {tags.map((tag) => {
-          const isSelected = selectedTags.includes(tag);
-          return (
-            <Button
-              key={tag}
-              variant={isSelected ? "primary" : "secondary"}
-              size="s"
-              onClick={() => handleTagClick(tag)}
-              data-border="rounded"
-            >
-              {tag}
-            </Button>
-          );
-        })}
-      </Row>
-      {hasActiveFilters && (
-        <Text variant="body-default-xs" onBackground="neutral-weak" paddingTop="4">
-          Showing posts with: {selectedTags.join(", ")}
+    <Card
+      background="surface"
+      border="neutral-alpha-weak"
+      radius="l"
+      padding="l"
+      fitHeight
+    >
+      <Column gap="16">
+        <Text variant="label-strong-m" onBackground="neutral-weak">
+          Filter
         </Text>
-      )}
-    </Column>
+        <Column gap="8">
+          <Button
+            variant={!hasActiveFilters ? "primary" : "secondary"}
+            size="s"
+            fillWidth
+            onClick={() => handleTagClick(null)}
+            data-border="rounded"
+            style={{ textAlign: "left", justifyContent: "flex-start", paddingLeft: "12px" }}
+          >
+            All
+          </Button>
+          {tags.map((tag) => {
+            const isSelected = selectedTags.includes(tag);
+            return (
+              <Button
+                key={tag}
+                variant={isSelected ? "primary" : "secondary"}
+                size="s"
+                fillWidth
+                onClick={() => handleTagClick(tag)}
+                data-border="rounded"
+                style={{ textAlign: "left", justifyContent: "flex-start", paddingLeft: "12px" }}
+              >
+                {tag}
+              </Button>
+            );
+          })}
+        </Column>
+        {hasActiveFilters && (
+          <Text variant="body-default-xs" onBackground="neutral-weak" paddingTop="8">
+            Showing: {selectedTags.join(", ")}
+          </Text>
+        )}
+      </Column>
+    </Card>
   );
 }
 

@@ -17,13 +17,11 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
       key={post.slug}
       href={`/blog/${post.slug}`}
       transition="micro-medium"
-      direction={direction}
-      border="transparent"
-      background="transparent"
-      padding="4"
-      radius="l-4"
-      gap={direction === "column" ? undefined : "24"}
-      s={{ direction: "column" }}
+      border="neutral-alpha-weak"
+      background="surface"
+      padding="l"
+      radius="l"
+      gap="16"
     >
       {post.metadata.image && thumbnail && (
         <Media
@@ -31,43 +29,47 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
           sizes="(max-width: 768px) 100vw, 640px"
           border="neutral-alpha-weak"
           cursor="interactive"
-          radius="l"
+          radius="m"
           src={post.metadata.image}
           alt={"Thumbnail of " + post.metadata.title}
           aspectRatio="16 / 9"
+          marginBottom="8"
         />
       )}
-      <Row fillWidth>
-        <Column maxWidth={28} paddingY="24" paddingX="l" gap="20" vertical="center">
-          <Row gap="24" vertical="center">
-            <Row vertical="center" gap="16">
-              <Avatar src={person.avatar} size="s" />
-              <Text variant="label-default-s">{person.name}</Text>
-            </Row>
-            <Text variant="body-default-xs" onBackground="neutral-weak">
-              {formatDate(post.metadata.publishedAt, false)}
-            </Text>
+      <Column fillWidth gap="12">
+        <Row gap="16" vertical="center" wrap>
+          <Row vertical="center" gap="8">
+            <Avatar src={person.avatar} size="s" />
+            <Text variant="label-default-s">{person.name}</Text>
           </Row>
-          <Text variant="heading-strong-l" wrap="balance">
-            {post.metadata.title}
+          <Text variant="body-default-xs" onBackground="neutral-weak">
+            {formatDate(post.metadata.publishedAt, false)}
           </Text>
-          {((post.metadata.tags && post.metadata.tags.length > 0) || post.metadata.tag) && (
-            <Row gap="8" wrap>
-              {post.metadata.tags && post.metadata.tags.length > 0
-                ? post.metadata.tags.map((tag, index) => (
-                    <Tag key={index} size="s">
-                      {tag}
-                    </Tag>
-                  ))
-                : post.metadata.tag && (
-                    <Tag size="s">
-                      {post.metadata.tag}
-                    </Tag>
-                  )}
-            </Row>
-          )}
-        </Column>
-      </Row>
+        </Row>
+        <Text variant="heading-strong-l" wrap="balance">
+          {post.metadata.title}
+        </Text>
+        {post.metadata.summary && (
+          <Text variant="body-default-m" onBackground="neutral-weak" wrap="balance">
+            {post.metadata.summary}
+          </Text>
+        )}
+        {((post.metadata.tags && post.metadata.tags.length > 0) || post.metadata.tag) && (
+          <Row gap="8" wrap>
+            {post.metadata.tags && post.metadata.tags.length > 0
+              ? post.metadata.tags.map((tag, index) => (
+                  <Tag key={index} size="s">
+                    {tag}
+                  </Tag>
+                ))
+              : post.metadata.tag && (
+                  <Tag size="s">
+                    {post.metadata.tag}
+                  </Tag>
+                )}
+          </Row>
+        )}
+      </Column>
     </Card>
   );
 }
